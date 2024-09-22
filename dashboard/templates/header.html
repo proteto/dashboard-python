@@ -1,0 +1,62 @@
+{% load static %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .notification {
+    transition: all 0.3s ease;
+  }
+
+  .notification:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  ::-webkit-scrollbar{
+    visibility: hidden;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: white;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #6b21a8;
+    border-radius: 50%;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  .custom-scrollbar::-moz-scrollbar-thumb {
+    border-radius: 50%;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #6b21a8 transparent;
+  }
+
+  .scroll-wrapper {
+    padding-right: 30px;
+  }
+</style>
+
+<header class="flex justify-between items-center mb-8  select-none">
+  <h2 class="text-xl md:text-xl font-semibold transition-all">Welcome<br><span class="text-purple-700 text-3xl">{{ user_details.name }}</span><lord-icon src="https://cdn.lordicon.com/ktsahwvc.json" trigger="loop"
+      colors="primary:#7e22ce" delay="500" style="width:25px;height:25px"></lord-icon></h2>
+  <div class="ml-3 flex items-center">
+    <lord-icon src="https://cdn.lordicon.com/vuiggmtc.json" class="cursor-pointer" trigger="morph" colors="primary:#7e22ce"
+      style="width:30px;height:30px">
+    </lord-icon>
+  </div>
+</header>

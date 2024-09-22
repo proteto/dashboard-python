@@ -1,0 +1,318 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/c792b80212.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-purple-700">
+  <div class="flex flex-col md:flex-row h-screen">
+    {% include 'sidebar.html' %}
+    <div class="flex-1 m-4 p-4 rounded-xl md:p-10 bg-purple-100">
+      <div class="w-full h-full flex-1 overflow-y-auto bg-purple-100">
+        {% include 'header.html' %}
+
+        <div class="md:w-2/3 w-full mx-auto flex flex-row gap-8 justify-between select-none pt-1 h-fit">
+          <div
+            class="max-w-sm px-6 overflow-hidden rounded-t-xl cursor-pointer bg-green-500 transition-all duration-300"
+            onclick="showForm('credit')">
+            <div class="px-2 py-2">
+              <h1 class="text-xl text-center font-bold text-white">Credit</h1>
+            </div>
+          </div>
+
+          <div class="max-w-sm px-6 overflow-hidden rounded-t-xl cursor-pointer bg-red-500 transition-all duration-300"
+            onclick="showForm('debit')">
+            <div class="px-2 py-2">
+              <h1 class="text-xl text-center font-bold text-white">Debit</h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credit Form -->
+        <div id="creditForm" class="form-container transition-all duration-300 ease-out md:w-2/3 mx-auto mt-0">
+          <form class="p-4 bg-white rounded-b-xl shadow-md"
+            onsubmit="event.preventDefault(); submitTransaction('credit');">
+            {% csrf_token %}
+
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <h2 class="text-xl font-bold text-green-800 mb-4">Credit Form</h2>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Ad no</label>
+              <input type="number" name="adNo"
+                class="mt-1 p-2 w-full rounded-md shadow-sm border-2 border-green-800 focus:border-green-800 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <button type="button"
+              onclick="findStudent(document.querySelector('#creditForm input[name=\'adNo\']').value, 'credit')"
+              class="outline-none px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 mt-2">Find Student</button>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mt-2">Name</label>
+              <input type="text" name="name"
+                class="mt-1 p-2 block w-full rounded-md border-0 focus:outline-none" disabled>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mt-2">Amount</label>
+              <input type="number" name="amount" style="display: none"
+                class="mt-1 p-2 w-full rounded-md shadow-sm border-2 border-green-800 focus:border-green-800 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mt-2">Description</label>
+              <input type="text" name="desc" style="display: none"
+                class="mt-1 p-2 w-full rounded-md shadow-sm border-2 border-green-800 focus:border-green-800 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <div class="mt-4">
+              <button type="submit" style="display: none"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 outline-none">Submit Credit</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Debit Form -->
+        <div id="debitForm"
+          class="form-container opacity-0 scale-95 transition-all duration-300 ease-out md:w-2/3 mx-auto md:mt-0 mt-2">
+          <form class="p-4 bg-white rounded-b-xl shadow-md"
+            onsubmit="event.preventDefault(); submitTransaction('debit');">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="mt-4">
+              {% for message in messages %}
+              <div
+                class="{% if message.tags %}bg-{{ message.tags }}-100 border-{{ message.tags }}-400 text-{{ message.tags }}-700 {% endif %} px-4 py-3 rounded relative"
+                role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <h2 class="text-xl font-bold text-rose-500 mb-4">Debit Form</h2>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Ad no</label>
+              <input type="number" name="adNo"
+                class="mt-1 p-2 block w-full rounded-md border-2 border-rose-500 focus:border-rose-500 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <button type="button"
+              onclick="findStudent(document.querySelector('#debitForm input[name=\'adNo\']').value, 'debit')"
+              class="outline-none px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 mt-2">Find
+              Student</button>
+
+            <div id="hidden">
+              <label class="block text-sm font-medium text-gray-700 mt-2">Name</label>
+              <input type="text" name="name" class="mt-1 p-2 block w-full rounded-md border-0 focus:outline-none"
+                disabled>
+            </div>
+
+            <div id="hidden">
+              <label class="block text-sm font-medium text-gray-700 mt-2">Amount</label>
+              <input type="number" name="amount" style="display: none"
+                class="mt-1 p-2 block w-full rounded-md border-2 border-rose-500 focus:border-rose-500 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mt-2">Description</label>
+              <input type="text" name="desc" style="display: none"
+                class="mt-1 p-2 block w-full rounded-md border-2 border-rose-500 focus:border-rose-500 focus:ring-purple-700 focus:outline-none">
+            </div>
+
+            <div class="mt-4" id="hidden">
+
+              <button type="submit" style="display: none"
+                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Submit Debit</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-open');
+    });
+
+    document.addEventListener('click', (event) => {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnMenuToggle = menuToggle.contains(event.target);
+
+      if (!isClickInsideSidebar && !isClickOnMenuToggle && window.innerWidth <= 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+
+    function showForm(type) {
+      const creditForm = document.getElementById('creditForm');
+      const debitForm = document.getElementById('debitForm');
+
+      if (type === 'credit') {
+        hideForm(debitForm);
+        showFormWithAnimation(creditForm);
+      } else if (type === 'debit') {
+        hideForm(creditForm);
+        showFormWithAnimation(debitForm);
+      }
+    }
+
+    function showFormWithAnimation(form) {
+      form.classList.remove('hidden');
+      setTimeout(() => {
+        form.classList.remove('opacity-0', 'scale-95');
+        form.classList.add('opacity-100', 'scale-100');
+      }, 300)
+    }
+
+    function hideForm(form) {
+      form.classList.remove('opacity-100', 'scale-100');
+      form.classList.add('opacity-0', 'scale-95');
+      form.classList.add('hidden');
+    }
+
+    function findStudent(adNo, type) {
+      fetch(`/find-student/?adNo=${adNo}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert(data.error);
+            return;
+          }
+
+          document.querySelector(`#${type}Form input[name='name']`).value = data.name;
+          document.querySelector(`#${type}Form input[name='amount']`).style.display = 'block';
+          document.querySelector(`#${type}Form input[name='desc']`).style.display = 'block';
+          document.querySelector(`#${type}Form button[type='submit']`).style.display = 'block';
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function submitTransaction(type) {
+
+      // Select the form and the required fields
+      var form = document.querySelector(`#${type}Form`);
+      if (!form) {
+        console.error("Form not found");
+        return;
+      }
+
+      var adNo = form.querySelector('input[name="adNo"]').value;
+      var name = form.querySelector('input[name="name"]').value;
+      var amount = form.querySelector('input[name="amount"]').value;
+      var desc = form.querySelector('input[name="desc"]').value;
+      var transactionId = Date.now();
+
+      // Send the transaction data to the server
+      fetch('/add_transaction/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: new URLSearchParams({
+          type: type,
+          adNo: adNo,
+          name: name,
+          amount: amount,
+          desc: desc,
+          transactionId: transactionId
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+          }
+
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          } else {
+            throw new Error('Expected JSON response but got something else');
+          }
+        })
+        .then(data => {
+          console.log('Form submitted successfully:', data);
+
+          // Reset the form fields only if form exists and reset is a function
+          if (form && typeof form.reset === 'function') {
+            form.reset(); // Reset the form fields
+          } else {
+            console.error('Form reset failed or form not found');
+          }
+
+          // Hide specific fields after form reset
+          var amountField = form.querySelector('input[name="amount"]');
+          var desc = form.querySelector('input[name="desc"]');
+          var submitButton = form.querySelector('button[type="submit"]');
+
+          if (amountField && desc && submitButton ) {
+            amountField.style.display = 'none';
+            desc.style.display = 'none';
+            submitButton.style.display = 'none';
+          } else {
+            console.error('Failed to hide elements after form submission');
+          }
+
+          alert('Transaction submitted successfully!');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to submit the form. Please try again.');
+        });
+    }
+
+    window.onload = function () {
+      document.querySelector(`#${type}Form`).forEach(form => form.value =  '');
+
+    }
+
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+  </script>
+</body>
+
+</html>

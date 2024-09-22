@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/c792b80212.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-purple-700">
+  <div class="flex flex-col md:flex-row h-screen">
+    <!-- sidebar -->
+    {% include 'sidebar.html' %}
+
+    <div class="flex-1 m-4 p-4 rounded-xl md:p-10 bg-purple-100 custom-scrollbar scroll-wrapper overflow-y-auto  ">
+      <div class="w-full h-full flex-1 overflow-y-auto bg-purple-100 custom-scrollbar scroll-wrapper">
+        {% include 'header.html' %}
+
+        <body class="min-h-screen min-w-full bg-gradient-to-br from-gray-100 to-gray-200 p-8">
+          <div class="mx-auto max-w-2xl">
+            <h1 class="mb-8 text-center text-3xl font-semibold text-gray-800">Notifications</h1>
+
+            <div class="space-y-4 custom-scrollbar scroll-wrapper">
+              <!-- Info Notification -->
+              <div class="notification rounded-lg border-l-4 border-blue-500 bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-xl text-blue-500"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Information Update</p>
+                    <p class="text-sm text-gray-500">We've updated our privacy policy. Please review it.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Success Notification -->
+              <div class="notification rounded-lg border-l-4 border-green-500 bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-check-circle text-xl text-green-500"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Success</p>
+                    <p class="text-sm text-gray-500">Your profile has been updated successfully.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Warning Notification -->
+              <div class="notification rounded-lg border-l-4 border-yellow-500 bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-xl text-yellow-500"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Warning</p>
+                    <p class="text-sm text-gray-500">Your account is about to expire. Please renew it.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error Notification -->
+              <div class="notification rounded-lg border-l-4 border-red-500 bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i class="fas fa-times-circle text-xl text-red-500"></i>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">Error</p>
+                    <p class="text-sm text-gray-500">There was an error processing your payment.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message Notification -->
+              <div class="notification rounded-lg bg-white p-4 shadow-md">
+                <div class="flex items-center">
+                  <img class="h-10 w-10 rounded-full" src="/api/placeholder/100/100" alt="User avatar" />
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">New message from Jane</p>
+                    <p class="text-sm text-gray-500">Hey, are we still on for lunch today?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </body>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-open');
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (event) => {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnMenuToggle = menuToggle.contains(event.target);
+
+      if (!isClickInsideSidebar && !isClickOnMenuToggle && window.innerWidth <= 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+
+    // Adjust sidebar on window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+  </script>
+</body>
+
+</html>

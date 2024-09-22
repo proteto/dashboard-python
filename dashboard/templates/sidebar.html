@@ -1,0 +1,49 @@
+{% load static %}
+<style>
+  .transition-all {
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-open {
+    transform: translateX(0) !important;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 50;
+    }
+  }
+</style>
+
+<!-- Mobile Header -->
+<header class="md:hidden bg-purple-700 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">STUDENT DASHBOARD</h1>
+  <button id="menuToggle" class="text-2xl"><i class="fas fa-bars"></i></button>
+</header>
+
+<!-- Sidebar -->
+<div id="sidebar"
+  class="sidebar select-none w-64 bg-purple-700 text-white p-6 transition-all duration-300 ease-in-out md:translate-x-0">
+  <h1 class="text-2xl text-center font-bold mb-8 hidden md:block">STUDENT DASHBOARD</h1>
+  <nav>
+    <a href="/" class="{% if page == 'index' %} text-yellow-300 {% else %} text-white {% endif %} block mb-4 transition-all hover:border-r-[10px] hover:border-yellow-300 hover:text-yellow-300"><i
+        class="fas fa-home mr-2"></i> Home</a>
+    <a href="/students/" class="{% if page == 'students' %} text-yellow-300 {% else %} text-white {% endif %} block mb-4 transition-all hover:border-r-[10px] hover:border-yellow-300 hover:text-yellow-300"><i
+        class="fas fa-project-diagram mr-2"></i> Students</a>
+    <a href="#" class="block mb-4 transition-all hover:border-r-[10px] hover:border-yellow-300 hover:text-yellow-300"><i
+        class="fas fa-calendar mr-2"></i> Calendar</a>
+    <a href="/notifications" class="{% if page == 'notifications' %} text-yellow-300 {% else %} text-white {% endif %} block mb-4 transition-all hover:border-r-[10px] hover:border-yellow-300 hover:text-yellow-300"><i
+        class="fas fa-comments mr-2"></i>Notification</a>
+    <a href="/account/" class="{% if page == 'account' %} text-yellow-300 {% else %} text-white {% endif %} block mb-4 transition-all hover:border-r-[10px] hover:border-yellow-300 hover:text-yellow-300"><i
+        class="fas fa-cog mr-2"></i> Account</a>
+  </nav>
+  <div class="mt-auto">
+    <button onclick="window.open('/logout/', '_self')"
+      class="bg-yellow-500 fixed bottom-5 text-white px-4 py-2 rounded-lg w-[200px] transition-all hover:bg-yellow-600 hover:shadow-lg">Logout</button>
+  </div>
+</div>

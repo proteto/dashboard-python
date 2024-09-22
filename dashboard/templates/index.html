@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <script src="https://kit.fontawesome.com/c792b80212.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-purple-700">
+  <div class="flex flex-col md:flex-row h-screen">
+
+    {% include 'sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="flex-1 m-4 p-4 rounded-xl md:p-10 bg-purple-100">
+      <div class="w-full h-full flex-1 overflow-y-auto bg-purple-100">
+        {% include 'header.html' %}
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+          <div
+            class="md:col-span-1 col-span-1 h-fit bg-white rounded-lg shadow md:p-4 p-1 text-center transition-all hover:shadow-xl">
+            <h3 class="text-xs md:text-sm font-semibold md:mt-1 mb-1 text-gray-500">Students</h3>
+            <hr>
+            <h1 class="md:text-6xl text-2xl font-bold text-green-700 text-center md:m-3">40</h1>
+          </div>
+
+          <div
+            class="md:col-span-1 col-span-1 h-fit bg-white rounded-lg shadow md:p-4 p-1 text-center transition-all hover:shadow-xl">
+            <h3 class="text-xs md:text-sm font-semibold md:mt-1 mb-1 text-gray-500">Balance</h3>
+            <hr>
+            <h1 class="md:text-6xl text-2xl font-bold text-green-700 text-center md:m-3">{{user_details.balance}}</h1>
+          </div>
+
+          <div
+            class="md:col-span-1 col-span-1 h-fit bg-white rounded-lg shadow md:p-4 p-1 text-center transition-all hover:shadow-xl">
+            <h3 class="text-xs md:text-sm font-semibold md:mt-1 mb-1 text-gray-500">Totol Balance</h3>
+            <hr>
+            <h1 class="md:text-6xl text-2xl font-bold text-green-700 text-center md:m-3">10564</h1>
+          </div>
+
+          <!-- Notifications -->
+          <div class="col-span-2 bg-white rounded-lg shadow p-4 md:p-6 transition-all hover:shadow-xl">
+            <h3 class="text-lg md:text-xl font-semibold mb-4">Notification</h3>
+            <div class="bg-purple-600 text-white rounded-lg p-4 transition-all hover:bg-purple-700">
+              <p class="pb-1">Emily just sent you task to assign</p>
+              <hr class="opacity-50 p-1">
+              <p class="text-xs label text-gray-300">18 Aug 2020 - 10:00 AM</p>
+              <button
+                class="w-full bg-yellow-500 text-white px-4 py-2 rounded-lg mt-2 transition-all hover:bg-yellow-600">View
+                More</button>
+            </div>
+          </div>
+
+          <!-- Today's Tasks
+          <div class="md:col-span-2 bg-white rounded-lg shadow p-4 md:p-6 transition-all hover:shadow-xl">
+            <h3 class="text-lg md:text-xl font-semibold mb-4">Today Task (3)</h3>
+            <ul>
+              <li class="flex items-center mb-2 transition-all hover:bg-gray-100 p-2 rounded">
+                <input type="checkbox" class="mr-2 transition-all hover:scale-110">
+                <span>Working on Asia Project</span>
+                <span class="ml-auto text-gray-500 text-sm">08:00-10:00 AM</span>
+              </li>
+              <li class="flex items-center mb-2 transition-all hover:bg-gray-100 p-2 rounded">
+                <input type="checkbox" class="mr-2 transition-all hover:scale-110">
+                <span>Team Meeting</span>
+                <span class="ml-auto text-gray-500 text-sm">11:00-12:00 AM</span>
+              </li>
+              <li class="flex items-center transition-all hover:bg-gray-100 p-2 rounded">
+                <input type="checkbox" class="mr-2 transition-all hover:scale-110">
+                <span>Doing Research</span>
+                <span class="ml-auto text-gray-500 text-sm">13:00-15:00 PM</span>
+              </li>
+            </ul>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-open');
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (event) => {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnMenuToggle = menuToggle.contains(event.target);
+
+      if (!isClickInsideSidebar && !isClickOnMenuToggle && window.innerWidth <= 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+
+    // Adjust sidebar on window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        sidebar.classList.remove('sidebar-open');
+      }
+    });
+  </script>
+</body>
+
+</html>
